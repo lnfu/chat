@@ -8,28 +8,27 @@ To run this project, you will need a C/C++ compiler. Some popular options includ
 To get the project up and running on your local machine, follow these steps:
 1. Clone the repository to your local machine
 ```
-git clone https://github.com/YOUR-USERNAME/chat-room.git
+git clone https://github.com/lnfu/chat.git
 ```
 
 2. Navigate to the project directory
-```
-cd chat-room
+```bash
+cd chat
 ```
 
 3. Compile the server and client programs using your C/C++ compiler
-```
-gcc -o server server.c
-gcc -o client client.c
+```bash
+make
 ```
 
 4. Run the server program in one terminal window
-```
-./server
+```bash
+./build/server <port>
 ```
 
 5. In another terminal window, run the client program
-```
-./client
+```bash
+./build/client <ip-address> <port>
 ```
 
 ## Using the Chat Room

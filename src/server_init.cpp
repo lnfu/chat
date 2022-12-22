@@ -1,18 +1,14 @@
 #include <arpa/inet.h>
+#include <sys/epoll.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
 #include <iostream>
 
+#include "../include/utility.hpp"
+
 using namespace std;
 
-#define TRUE 1
-#define FALSE 0
-
-void error_handling(const char *error_message) {
-    perror(error_message);
-    exit(1);
-}
 
 /// @brief set address of server (INADDRANY)
 /// @param server_address
@@ -60,34 +56,19 @@ int init_tcp_socket(const char *port) {
     return tcp_socket;
 }
 
-/// @brief UDP socket: create, bind
-/// @param port
-/// @return file descriptor of UDP socket
-int init_udp_socket(const char *port) {
-    int udp_socket;
-    int option;
+/// @brief add the socket_fd to epoll
+/// @param socket_fd
+/// @param epoll_fd
+/// @return
+void add_socket_to_epoll(int socket_fd, int epoll_fd) {
+    struct epoll_event event;
+    event.events = EPOLLIN;
+    event.data.fd = socket_fd;
+    epoll_ctl(epoll_fd, EPOLL_CTL_ADD, socket_fd, &event);
+}
 
-    struct sockaddr_in server_address;
 
-    // create socket
-    udp_socket = socket(PF_INET, SOCK_DGRAM, 0);
-    if (udp_socket == -1) {
-        error_handling("socket()");
-    }
-
-    // set SO_REUSEADDR = TRUE
-    option = TRUE;
-    setsockopt(udp_socket, SOL_SOCKET, SO_REUSEADDR, (void *)&option, sizeof(option));
-
-    // set address
-    set_server_address(&server_address, port);
-
-    // bind
-    if (bind(udp_socket, (struct sockaddr *)&server_address, sizeof(server_address)) == -1) {
-        error_handling("bind()");
-    }
-
-    printf("UDP is running\n");
-
-    return udp_socket;
+void close_request(int socket_fd, int epoll_fd) {
+    epoll_ctl(epoll_fd, EPOLL_CTL_DEL, socket_fd, NULL);
+    close(socket_fd);
 }

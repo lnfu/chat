@@ -6,51 +6,78 @@
 #include <iostream>
 
 #include "../include/server_init.hpp"
+#include "../include/utility.hpp"
 
 using namespace std;
 
-#define TRUE 1
-#define FALSE 0
-#define EPOLL_SIZE 50
-
-void error_handling(const char *error_message) {
-    perror(error_message);
-    exit(1);
-}
 
 int main(int argc, char *argv[]) {
-    int tcp_socket;
-    int udp_socket;
+    int welcome_socket;
 
     int epoll_fd;
     int event_count;
-    struct epoll_event *epoll_events;
-    struct epoll_event event;
-
-    struct sockaddr_in client_address;
-
-    if (argc != 2) {
-        printf("Usage : %s <port>\n", argv[0]);
-        exit(1);
-    }
+    struct epoll_event *epoll_events;  // for trigger event
 
     // create socket
-    tcp_socket = init_tcp_socket(argv[1]);
-    udp_socket = init_udp_socket(argv[1]);
+    // ! old
+    // if (argc != 2) {
+    //     printf("Usage : %s <port>\n", argv[0]);
+    //     exit(1);
+    // }
+    // * new
+    if (argc == 2) {
+        welcome_socket = init_tcp_socket(argv[1]);
+    } else {
+        welcome_socket = init_tcp_socket("9999");
+    }
+
+
 
     // epoll
     epoll_fd = epoll_create(EPOLL_SIZE);
-    epoll_events = malloc(sizeof(struct epoll_event) * EPOLL_SIZE);
+    epoll_events = new epoll_event[EPOLL_SIZE];
 
-    event.events = EPOLLIN;
-    event.data.fd = tcp_socket;
-    epoll_ctl(epoll_fd, EPOLL_CTL_ADD, tcp_socket, &event);
+    add_socket_to_epoll(welcome_socket, epoll_fd);
+
 
     // accept socket
+    while (1) {
+        event_count = epoll_wait(epoll_fd, epoll_events, EPOLL_SIZE, -1);  // -1: no timeout
+        if (event_count == -1) {
+            error_handling("epoll_wait()");
+        }
 
-    // close socket
-    close(tcp_socket);
-    close(udp_socket);
+        for (int i = 0; i < event_count; i++) {
+            int fd = epoll_events[i].data.fd;
+
+            if (fd == welcome_socket) {
+                // create a new connection
+                struct sockaddr_in client_address;
+                socklen_t client_address_size = sizeof(client_address);
+
+                int connect_socket = accept(welcome_socket, (struct sockaddr *)&client_address, &client_address_size);
+
+                add_socket_to_epoll(connect_socket, epoll_fd);
+
+                printf("Connected client: %d\n", connect_socket);
+            } else {
+                char buffer[BUFFER_SIZE] = {0};
+                int receive_length = read(fd, buffer, BUFFER_SIZE);
+                if (receive_length == 0) {
+                    close_request(fd, epoll_fd);
+                    printf("Closed client: %d\n", fd);
+                } else {
+                    // TODO
+                    // !
+                    write(fd, buffer, receive_length);
+                }
+            }
+        }
+    }
+
+    // close fd
+    close(welcome_socket);
+    close(epoll_fd);
 
     return 0;
 }

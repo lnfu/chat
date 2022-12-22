@@ -35,6 +35,7 @@ make
 ```
 
 ## Using the Chat Room
+for now, it's just a echo program XD
 ...
 
 ## Contributing

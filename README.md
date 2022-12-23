@@ -6,8 +6,6 @@ A simple chat room application using only C/C++, with a server and a client prog
 
 ## Prerequisites
 To run this project, you will need a C/C++ compiler. Some popular options include GCC and Clang.
-> :warning: **This project is only supported on Linux now**: since i use the epoll() function for i/o multiplexing
-
 > **Warning**
 > This project is only supported on GNU/Linux since I use the epoll() function for I/O multiplexing.
 

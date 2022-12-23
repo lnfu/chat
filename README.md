@@ -35,8 +35,13 @@ make
 ```
 
 ## Using the Chat Room
-for now, it's just a echo program XD
-...
+| Command                   | Description                                                                  |
+| ------------------------- | ---------------------------------------------------------------------------- |
+| mute                      | The user will not receive any message, including public and private message. |
+| unmute                    | Disable mute                                                                 |
+| yell <message>            | Send a message to others in the chat room.                                   |
+| tell <receiver> <message> | Send a private message to <receiver> in the chat room.                       |
+| Exit                      | Disconnect from the server.                                                  |
 
 ## Contributing
 If you would like to contribute to the project, please fork the repository and make your changes in a separate branch. Once you are ready to submit your changes, open a pull request and describe your changes.

@@ -9,7 +9,6 @@
 
 using namespace std;
 
-
 /// @brief set address of server (INADDRANY)
 /// @param server_address
 /// @param port

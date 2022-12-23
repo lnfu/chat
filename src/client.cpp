@@ -1,4 +1,5 @@
 #include <arpa/inet.h>
+#include <sys/select.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
@@ -38,22 +39,50 @@ int main(int argc, char *argv[]) {
 
     printf("TCP connection has created\n");
 
-    while (TRUE) {
-        cout << "% ";
+    // SELECT
+    fd_set reads, temps;
+    FD_ZERO(&reads);
+    FD_SET(0, &reads);
+    FD_SET(client_socket, &reads);
 
-        char buffer[BUFFER_SIZE] = {0};
+    while (true) {
+        putchar('%');
+        putchar(' ');
+        fflush(stdout);
 
-        fgets(buffer, BUFFER_SIZE, stdin);
+        // printf("% ");
 
-        printf("Sending message: %s", buffer);
+        temps = reads;
+        int select_result = select(client_socket + 1, &temps, 0, 0, 0);
+        if (select_result == -1) {
+            error_handling("select()");
+        } else if (select_result == 0) {
+            continue;
+        }
 
-        write(client_socket, buffer, strlen(buffer) - 1);  // -1 is because i dont want the \n
+        if (FD_ISSET(client_socket, &temps)) {
+            char buffer[BUFFER_SIZE] = {0};
+            int message_length = read(client_socket, buffer, BUFFER_SIZE);
+            buffer[message_length] = 0;
 
-        memset(buffer, 0, BUFFER_SIZE);
+            printf("\r%s\n", buffer);
+        }
 
-        read(client_socket, buffer, BUFFER_SIZE);
+        if (FD_ISSET(0, &temps)) {
+            char buffer[BUFFER_SIZE] = {0};
+            int message_length = read(0, buffer, BUFFER_SIZE);
+            buffer[message_length] = 0;
 
-        printf("Received message: %s\n", buffer);
+            if (message_length == 0) {
+                continue;
+            }
+
+            if (is_string_match(buffer, "exit") or is_string_match(buffer, "Exit")) {
+                break;
+            }
+
+            write(client_socket, buffer, message_length);
+        }
     }
 
     close(client_socket);

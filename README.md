@@ -35,6 +35,8 @@ make
 ./build/client <ip-address> <port>
 ```
 
+> :note: **The parameter is optional**: if you do not assign the ip-address and port number, the default ip-address is localhost (127.0.0.1) and the default port number is 9999
+
 ## Using the Chat Room
 | Command                   | Description                                                                  |
 | ------------------------- | ---------------------------------------------------------------------------- |

@@ -29,25 +29,25 @@ make
 
 4. Run the server program in one terminal window
 ```bash
-./build/server \<port\>
+./build/server <port>
 ```
 
 5. In another terminal window, run the client program
 ```bash
-./build/client \<ip-address\> \<port\>
+./build/client <ip-address> <port>
 ```
 
 > **Note**
 > If you do not assign the IP address and port number, the default IP address is localhost (127.0.0.1) and the default port number is 9999.
 
 ## Using the Chat Room
-| Command                   | Description                                                                  |
-| ------------------------- | ---------------------------------------------------------------------------- |
-| mute                      | The user will not receive any message, including public and private message. |
-| unmute                    | Disable mute                                                                 |
-| yell <message>            | Send a message to others in the chat room.                                   |
-| tell <receiver> <message> | Send a private message to <receiver> in the chat room.                       |
-| Exit                      | Disconnect from the server.                                                  |
+| Command                            | Description                                                                  |
+| ---------------------------------- | ---------------------------------------------------------------------------- |
+| mute                               | The user will not receive any message, including public and private message. |
+| unmute                             | Disable mute                                                                 |
+| yell &lt;message&gt;               | Send a message to others in the chat room.                                   |
+| tell &lt;receiver> &lt;message&gt; | Send a private message to &lt;receiver&gt; in the chat room.                 |
+| Exit                               | Disconnect from the server.                                                  |
 
 ## Contributing
 If you would like to contribute to the project, please fork the repository and make your changes in a separate branch. Once you are ready to submit your changes, open a pull request and describe your changes.

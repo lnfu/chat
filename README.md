@@ -29,12 +29,12 @@ make
 
 4. Run the server program in one terminal window
 ```bash
-./build/server <port>
+./build/server \<port\>
 ```
 
 5. In another terminal window, run the client program
 ```bash
-./build/client <ip-address> <port>
+./build/client \<ip-address\> \<port\>
 ```
 
 > **Note**

@@ -8,6 +8,10 @@ A simple chat room application using only C/C++, with a server and a client prog
 To run this project, you will need a C/C++ compiler. Some popular options include GCC and Clang.
 > :warning: **This project is only supported on Linux now**: since i use the epoll() function for i/o multiplexing
 
+> **Warning**
+> This project is only supported on GNU/Linux since I use the epoll() function for I/O multiplexing.
+
+
 ## Installation
 To get the project up and running on your local machine, follow these steps:
 1. Clone the repository to your local machine
@@ -35,7 +39,8 @@ make
 ./build/client <ip-address> <port>
 ```
 
-> :note: **The parameter is optional**: if you do not assign the ip-address and port number, the default ip-address is localhost (127.0.0.1) and the default port number is 9999
+> **Note**
+> If you do not assign the IP address and port number, the default IP address is localhost (127.0.0.1) and the default port number is 9999.
 
 ## Using the Chat Room
 | Command                   | Description                                                                  |

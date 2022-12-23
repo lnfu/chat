@@ -53,4 +53,4 @@ make
 If you would like to contribute to the project, please fork the repository and make your changes in a separate branch. Once you are ready to submit your changes, open a pull request and describe your changes.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/lnfu/chat/blob/main/LICENSE) file for details.
